@@ -1,4 +1,4 @@
-"""Sensor platform for Polyconnect — temperature, mode, and status sensors.
+"""Sensor platform for Polyconnect — temperature, mode, and status sensors with english.
 
 One sensor of each kind per discovered heat pump.
 """
