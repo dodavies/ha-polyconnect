@@ -424,7 +424,7 @@ class PolyconnectController:
         self._ctx     = self._browser.new_context(
             extra_http_headers=CF, user_agent=UA,
             viewport={"width": 390, "height": 844}, locale="fr-FR")
-# Legacy affinity cookie is not valid for the server-provided origin.
+        # Legacy affinity cookie is not valid for the server-provided origin.
         self._page    = self._ctx.new_page()
         try:
             self._load_app()
