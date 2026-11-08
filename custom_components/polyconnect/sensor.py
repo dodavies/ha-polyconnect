@@ -1,4 +1,4 @@
-"""Sensor platform for Polyconnect — temperature, mode, and status sensors with english.
+"""Sensor platform for Polyconnect — temperature, mode, and status sensors.
 
 One sensor of each kind per discovered heat pump.
 """
@@ -106,25 +106,9 @@ class PolyconnectSensor(PolyconnectEntity, SensorEntity):
         super().__init__(coordinator, pump_id, pump_name, description.key)
         self.entity_description = description
 
-
     @property
     def native_value(self) -> float | str | None:
         data = self._pump_data
         if not data:
             return None
-
-        value = data.get(self.entity_description.data_key)
-
-        if self.entity_description.data_key == "operatingMode" and isinstance(value, str):
-            translations = {
-                "Chauffage": "Heating",
-                "Froid": "Cooling",
-                "Climatisation": "Cooling",
-                "Automatique": "Automatic",
-                "Eteint": "Off",
-                "Éteint": "Off",
-            }
-            return translations.get(value, value)
-
-        return value
-
+        return data.get(self.entity_description.data_key)
