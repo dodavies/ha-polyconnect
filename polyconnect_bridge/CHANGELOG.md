@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Declare Polyconnect application version `9.1` during native login. Polytropic's
+  `9.1` rollout makes sessions declared as `9.0` land on the localized update
+  page instead of starting the Blazor application. The application URL remains
+  server-provided, so endpoint changes continue to be followed without rewriting
+  stored credentials or changing the login protocol.
+
 ## 2.4.1
 
 - Detect pending Polyconnect Terms of Service acceptance (`/terms-of-service/0`)
