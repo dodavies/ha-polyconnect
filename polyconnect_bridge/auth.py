@@ -41,9 +41,11 @@ SESSION_FILE = DATA_DIR / "session.json"     # { token, url, issued_at } — sho
 IDS_FILE = DATA_DIR / "ids.json"             # { installation_id, heat_pump_id } — discovered/configured
 LEGACY_TOKEN_FILE = DATA_DIR / "token.txt"   # v1 leftover; migrated on first run
 
-# ── Protocol constants (from PolyconnectUserAppMaui/MauiProgram.cs) ──────────
+# ── Protocol constants and current official Android application identity ─────
 BASE_URL = "https://auth.pool.mytech-connect.io"
 AEID = "userApp_polytropic"
+APPLICATION_VERSION = "9.1.3"
+APPLICATION_PACKAGE = "com.ckc_net.polytropic"
 PUBLIC_TRANSACTION_KEY = "ZZuo8EMfc93KtDU745gvzw8DsWY0"
 PRE_SALT = "zLT6DV"
 POST_SALT = "NEEJ9S"
@@ -211,10 +213,16 @@ def _login_remote(email: str, password: str, terminal_id: str, terminal_key: str
         "e": email.strip().lower(),
         "h": pwd_hash,
         "tid": terminal_id,
-        "av": "9.0",
-        "pn": "com.polytropic.pool",
+        "av": APPLICATION_VERSION,
+        "pn": APPLICATION_PACKAGE,
     }
     envelope = _make_terminal_signed({"args": args}, terminal_id, terminal_key)
+    log.info(
+        "Polyconnect client identity: aeid=%s version=%s package=%s",
+        AEID,
+        APPLICATION_VERSION,
+        APPLICATION_PACKAGE,
+    )
     r = requests.post(f"{BASE_URL}/Irc/Application/Login",
                       data=_dumps(envelope),
                       headers={"Content-Type": "application/json"},

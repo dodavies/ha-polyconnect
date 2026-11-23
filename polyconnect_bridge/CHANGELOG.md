@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.4.3
+
+- Identify as the current Android Polyconnect client (`9.1.3`, package
+  `com.ckc_net.polytropic`) during native login. The previous version/package
+  pair did not match the current Android app and successful logins continued to
+  route to the retired application. The application URL remains server-provided,
+  so endpoint changes continue to be followed without rewriting stored
+  credentials or changing the login protocol.
+- Read the displayed bridge version from the add-on manifest instead of the stale
+  hard-coded `2.4.1` diagnostic.
+
 ## 2.4.1
 
 - Detect pending Polyconnect Terms of Service acceptance (`/terms-of-service/0`)
