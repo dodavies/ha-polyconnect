@@ -15,7 +15,9 @@ export POLYCONNECT_EMAIL=$(get_option email)
 export POLYCONNECT_PASSWORD=$(get_option password)
 
 ADDON_DIR="$(cd "$(dirname "$0")" && pwd)"
-BRIDGE_VERSION=$(grep -oP '(?<=^version: ")[^"]+' "$ADDON_DIR/config.yaml" 2>/dev/null || echo "unknown")
+BRIDGE_VERSION=$(sed -n 's/^version: "\([^"]*\)"/\1/p' "$ADDON_DIR/config.yaml" 2>/dev/null | head -n 1)
+BRIDGE_VERSION=${BRIDGE_VERSION:-unknown}
+export POLYCONNECT_BRIDGE_VERSION="$BRIDGE_VERSION"
 echo "Starting Polyconnect Bridge v${BRIDGE_VERSION}..."
 echo "  Credentials stored in: /data/"
 echo "  Log level: ${POLYCONNECT_LOG_LEVEL:-info}"

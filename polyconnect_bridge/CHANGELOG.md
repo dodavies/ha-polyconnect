@@ -1,12 +1,15 @@
 # Changelog
 
-## Unreleased
+## 2.4.3
 
-- Declare Polyconnect application version `9.1` during native login. Polytropic's
-  `9.1` rollout makes sessions declared as `9.0` land on the localized update
-  page instead of starting the Blazor application. The application URL remains
-  server-provided, so endpoint changes continue to be followed without rewriting
-  stored credentials or changing the login protocol.
+- Identify as the current Android Polyconnect client (`9.1.3`, package
+  `com.ckc_net.polytropic`) during native login. The previous version/package
+  pair did not match the current Android app and successful logins continued to
+  route to the retired application. The application URL remains server-provided,
+  so endpoint changes continue to be followed without rewriting stored
+  credentials or changing the login protocol.
+- Read the displayed bridge version from the add-on manifest instead of the stale
+  hard-coded `2.4.1` diagnostic.
 
 ## 2.4.1
 

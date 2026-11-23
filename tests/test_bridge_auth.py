@@ -35,7 +35,7 @@ class _Response:
 class NativeLoginContractTests(unittest.TestCase):
     """Verify the version declaration and server-provided application URL."""
 
-    def test_login_declares_current_application_version(self) -> None:
+    def test_login_declares_current_android_application_identity(self) -> None:
         token = "t" * 516
         application_url = (
             "https://polytropic.user-app.v2.pool.mytech-connect.io/from-native"
@@ -46,7 +46,10 @@ class NativeLoginContractTests(unittest.TestCase):
             "terminal-key",
         )
 
-        with patch.object(auth.requests, "post", return_value=_Response(response)) as post:
+        with (
+            patch.object(auth.requests, "post", return_value=_Response(response)) as post,
+            patch.object(auth.log, "info") as log_info,
+        ):
             returned_token, returned_url = auth._login_remote(
                 "USER@example.com ",
                 "password",
@@ -69,10 +72,16 @@ class NativeLoginContractTests(unittest.TestCase):
         protected = auth._decode_envelope(request_envelope)
         request_payload = json.loads(protected["sp"])
         args = request_payload["args"]
-        self.assertEqual(args["av"], "9.1")
-        self.assertEqual(args["pn"], "com.polytropic.pool")
+        self.assertEqual(args["av"], "9.1.3")
+        self.assertEqual(args["pn"], "com.ckc_net.polytropic")
         self.assertEqual(args["aeid"], "userApp_polytropic")
         self.assertEqual(args["e"], "user@example.com")
+        log_info.assert_called_once_with(
+            "Polyconnect client identity: aeid=%s version=%s package=%s",
+            "userApp_polytropic",
+            "9.1.3",
+            "com.ckc_net.polytropic",
+        )
 
     def test_get_app_url_preserves_server_provided_endpoint(self) -> None:
         manager = auth.AuthManager.__new__(auth.AuthManager)
